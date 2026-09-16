@@ -40,6 +40,8 @@ int main() {
         }
     }
 
+
+
     char key[MAX_KEY_LENGTH];
     printf("Enter the key: ");
     fgets(key, sizeof(key), stdin);
@@ -54,7 +56,7 @@ int main() {
     char buffer[4096];
     size_t bytes_read;
 
-    if (choice == 'e') {
+    if (choice[0] == 'e') {
         printf("Enter the string to encrypt: ");
         fgets(buffer, sizeof(buffer), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
