@@ -26,7 +26,7 @@ int main() {
     filename[strcspn(filename, "\n")] = '\0';
 
     FILE *file;
-    if (choice == 'e') {
+    if (choice[0] == 'e') {
         file = fopen(filename, "w");
         if (!file) {
             perror("Failed to open file for writing");
