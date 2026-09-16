@@ -61,9 +61,11 @@ int main() {
         fgets(buffer, sizeof(buffer), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
 
-        xor_encrypt_decrypt(buffer, strlen(buffer), key);
+        int length = strlen(buffer);
 
-        fwrite(buffer, 1, strlen(buffer), file);
+        xor_encrypt_decrypt(buffer, length, key);
+
+        fwrite(buffer, 1, length, file);
     } else {
         bytes_read = fread(buffer, 1, sizeof(buffer) - 1, file);
         if (bytes_read == 0) {
