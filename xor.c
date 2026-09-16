@@ -11,11 +11,11 @@ void xor_encrypt_decrypt(char *data, size_t length, const char *key) {
 }
 
 int main() {
-    char choice;
+    char choice[3];
     printf("Enter 'e' to encrypt or 'd' to decrypt: ");
-    scanf(" %c", &choice);
+    fgets(choice, sizeof(choice), stdin);
 
-    if (choice != 'e' && choice != 'd') {
+    if (choice[0] != 'e' && choice[0] != 'd') {
         printf("Invalid choice.\n");
         return 1;
     }
