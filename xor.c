@@ -4,7 +4,7 @@
 
 #define MAX_KEY_LENGTH 256
 
-void xor_encrypt_decrypt(char *data, size_t length, const char *key) {
+void xor_encrypt_decrypt(char* data, size_t length, const char* key) {
     for (size_t i = 0; i < length; ++i) {
         data[i] ^= key[i % strlen(key)];
     }
@@ -25,14 +25,21 @@ int main() {
     fgets(filename, sizeof(filename), stdin);
     filename[strcspn(filename, "\n")] = '\0';
 
-    FILE *file;
+    // Check if the filename is too long
+    if (strlen(filename) > 255) {
+        fprintf(stderr, "Filename too long.\n");
+        return 1;
+    }
+
+    FILE* file;
     if (choice[0] == 'e') {
         file = fopen(filename, "w");
         if (!file) {
             perror("Failed to open file for writing");
             return 1;
         }
-    } else {
+    }
+    else {
         file = fopen(filename, "r");
         if (!file) {
             perror("Failed to open file for reading");
@@ -40,15 +47,14 @@ int main() {
         }
     }
 
-
-
     char key[MAX_KEY_LENGTH];
     printf("Enter the key: ");
     fgets(key, sizeof(key), stdin);
     key[strcspn(key, "\n")] = '\0';
 
-    if (strlen(key) == 0) {
-        fprintf(stderr, "Key cannot be empty.\n");
+    // Check if the key is too long
+    if (strlen(key) > MAX_KEY_LENGTH) {
+        fprintf(stderr, "Key too long.\n");
         fclose(file);
         return 1;
     }
@@ -61,12 +67,19 @@ int main() {
         fgets(buffer, sizeof(buffer), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
 
+        // Check if the plaintext is too long
         int length = strlen(buffer);
+        if (length > 4096 - 1) {
+            fprintf(stderr, "Plaintext too long.\n");
+            fclose(file);
+            return 1;
+        }
 
         xor_encrypt_decrypt(buffer, length, key);
 
         fwrite(buffer, 1, length, file);
-    } else {
+    }
+    else {
         bytes_read = fread(buffer, 1, sizeof(buffer) - 1, file);
         if (bytes_read == 0) {
             perror("Failed to read from file");
